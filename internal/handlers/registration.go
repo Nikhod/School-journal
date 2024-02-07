@@ -35,3 +35,7 @@ func (h *Handler) Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *Handler) GetToken(w http.ResponseWriter, r *http.Request) {
+	
+}
