@@ -8,7 +8,7 @@ import (
 	"second/pkg/models"
 )
 
-func (h *Handler) Registration(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 	auth := models.BasicAuth{
 		Login:    r.Header.Get("login"),
 		Password: r.Header.Get("pass"),
@@ -20,7 +20,7 @@ func (h *Handler) Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Service.RegistrationUser(&auth)
+	err = h.Service.RegistrationPupil(&auth)
 	if err != nil {
 		if errors.Is(err, errors.New("the login is already used")) {
 			helpers.Forbidden(w, h.Logger, err)
