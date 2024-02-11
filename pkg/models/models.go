@@ -33,6 +33,8 @@ type Pupil struct {
 	YearOfBirth      string    `gorm:"type:text;not null"`
 	Address          string    `gorm:"type:text;default:'no data'"`
 	Number           string    `gorm:"type:text;default:'no data'"`
+	SchoolId         uint      `gorm:"not null"`
+	School           School    `gorm:"not null; foreignkey:SchoolId"`
 	ExtraInfo        string    `gorm:"type:text;default:'no data'"`
 	ClassroomTeacher uint      `gorm:"not null"`
 	ClassLiteral     uint      `gorm:"not null"`
@@ -66,6 +68,8 @@ type Teacher struct {
 	Classroom           string    `gorm:"not null;default:'no data'"`
 	ClassroomManagement uint      `gorm:"not null;default:0"`
 	Class               Class     `gorm:"not null;foreignkey:ClassroomManagement"`
+	SchoolId            uint      `gorm:"not null"`
+	School              School    `gorm:"not null; foreignkey:SchoolId"`
 	CreatedAt           time.Time `gorm:"not null;default:current_timestamp"`
 	UpdatedAt           time.Time `gorm:"not null;default:current_timestamp"`
 	DeletedAt           time.Time `gorm:"not null;default:current_timestamp"`
@@ -104,4 +108,13 @@ type SubjectName struct {
 	CreatedAt   time.Time `gorm:"not null;default:current_timestamp"`
 	UpdatedAt   time.Time `gorm:"not null;default:current_timestamp"`
 	DeletedAt   time.Time `gorm:"not null;default:current_timestamp"`
+}
+
+type School struct {
+	Id         uint64    `gorm:"not null;primary key; autoincrement"`
+	Active     bool      `gorm:"not null;default:true"`
+	SchoolName string    `gorm:"type:text; not null"`
+	CreatedAt  time.Time `gorm:"not null;default:current_timestamp"`
+	UpdatedAt  time.Time `gorm:"not null;default:current_timestamp"`
+	DeletedAt  time.Time `gorm:"not null;default:current_timestamp"`
 }
