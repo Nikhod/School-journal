@@ -31,7 +31,8 @@ func Migrations(db *gorm.DB) error {
 	migrator := db.Migrator()
 
 	err := migrator.AutoMigrate(&models.SubjectName{}, &models.Class{},
-		&models.Teacher{}, &models.Subject{}, &models.Pupil{}, &models.Circle{})
+		&models.Teacher{}, &models.Subject{}, &models.Pupil{}, &models.Circle{},
+		&models.School{})
 	if err != nil {
 		log.Println(err)
 		return err
