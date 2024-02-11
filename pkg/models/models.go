@@ -36,7 +36,7 @@ type Pupil struct {
 	SchoolId         uint      `gorm:"not null"`
 	School           School    `gorm:"not null; foreignkey:SchoolId"`
 	ExtraInfo        string    `gorm:"type:text;default:'no data'"`
-	ClassroomTeacher uint      `gorm:"not null"`
+	ClassroomTeacher uint      `gorm:"not null; default: no data"`
 	ClassLiteral     uint      `gorm:"not null"`
 	Teacher          Teacher   `gorm:"foreignkey:ClassroomTeacher"`
 	Class            Class     `gorm:"foreignkey:ClassLiteral"`
