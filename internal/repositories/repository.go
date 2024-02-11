@@ -1,11 +1,10 @@
 package repositories
 
 import (
-	"fmt"
+	"errors"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"log"
-	"second/pkg/database"
 	"second/pkg/models"
 )
 
@@ -18,27 +17,27 @@ func NewRepository(database *gorm.DB, logger *zap.Logger) *Repository {
 	return &Repository{Database: database, Logger: logger}
 }
 
-func (r *Repository) RegistrationUser(auth *models.BasicAuth) error {
-	var user database.User
-	if err := r.Database.First(&user, 2).Error; err != nil {
-		log.Println("data not found")
-		return err
-	}
-
-	err := r.Database.Model(&user).Association("role").Find(&user.Role)
-	if err != nil {
-		log.Println(err)
-		log.Println("error here")
-		return err
-	}
-
-	log.Println(user)
-	fmt.Println()
-	log.Println(user.Role.Role)
+func (r *Repository) RegistrationPupil(pupil *models.Pupil) error {
+	r.Database.Create(pupil)
 	return nil
 }
 
 func (r *Repository) IsLoginFree(login string) bool {
-	//todo ligic
+	var pupil models.Pupil
+	var amountOfRecords int64
+	tx := r.Database.Select("id").First(&pupil, models.Pupil{Login: login}).Count(&amountOfRecords)
+	log.Println(amountOfRecords)
+
+	err := tx.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return true
+	} else if err != nil {
+		r.Logger.Error("error during the registration")
+		return false
+	}
+	if amountOfRecords != 0 {
+		return false
+	}
+
 	return true
 }
