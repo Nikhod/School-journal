@@ -20,9 +20,9 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		Patronymic:  r.FormValue("patronymic"),
 		Login:       r.FormValue("login"),
 		Password:    r.FormValue("password"),
-		YearOfBirth: r.FormValue("b-day"),
+		YearOfBirth: r.FormValue("b_day"),
 		Address:     r.FormValue("address"),
-		Number:      r.FormValue("number"),
+		Number:      r.FormValue("tel_number"),
 		ExtraInfo:   r.FormValue("extra-info"),
 	}
 	extraInfo := models.ExtraInfoForPupilRegistration{
@@ -31,6 +31,10 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 			Name:       r.FormValue("teacher_name"),
 			Surname:    r.FormValue("teacher_surname"),
 			Patronymic: r.FormValue("teacher_patronymic"),
+		},
+		ClassLit: models.ClassLit{
+			Number:  r.FormValue("class_num"),
+			Literal: r.FormValue("class_lit"),
 		},
 	}
 
