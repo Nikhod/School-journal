@@ -28,7 +28,7 @@ type Pupil struct {
 	Name             string    `gorm:"type:text;not null"`
 	Surname          string    `gorm:"type:text;not null"`
 	Patronymic       string    `gorm:"type:text;default:'no data'"`
-	Login            string    `gorm:"type:text;not null"`
+	Login            string    `gorm:"type:text;not null;unique"`
 	Password         string    `gorm:"type:text;not null"`
 	YearOfBirth      string    `gorm:"type:text;not null"`
 	Address          string    `gorm:"type:text;default:'no data'"`
@@ -62,7 +62,7 @@ type Teacher struct {
 	Surname             string    `gorm:"not null"`
 	Patronymic          string    `gorm:"not null;default:'no data'"`
 	YearOfBirth         string    `gorm:"not null"`
-	Login               string    `gorm:"type:text;not null"`
+	Login               string    `gorm:"type:text;not null;unique"`
 	Password            string    `gorm:"type:text;not null"`
 	Number              string    `gorm:"not null;default:'no data'"`
 	Classroom           string    `gorm:"not null;default:'no data'"`
