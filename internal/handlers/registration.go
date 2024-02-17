@@ -25,7 +25,14 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		Number:      r.FormValue("number"),
 		ExtraInfo:   r.FormValue("extra-info"),
 	}
-	schoolName := r.FormValue("school_name")
+	extraInfo := models.ExtraInfoForPupilRegistration{
+		SchoolName: r.FormValue("school_name"),
+		TeacherBIO: models.TeacherBIO{
+			Name:       r.FormValue("teacher_name"),
+			Surname:    r.FormValue("teacher_surname"),
+			Patronymic: r.FormValue("teacher_patronymic"),
+		},
+	}
 
 	auth := models.BasicAuth{
 		Login:    pupil.Login,
@@ -38,7 +45,7 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = h.Service.RegistrationPupil(&pupil, schoolName)
+	err = h.Service.RegistrationPupil(&pupil, &extraInfo)
 	if err != nil {
 		if errors.Is(err, errors.New("the login is already used")) {
 			helpers.Forbidden(w, h.Logger, err)
