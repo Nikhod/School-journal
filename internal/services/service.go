@@ -26,16 +26,41 @@ func (s *Services) ValidateLoginAndPass(auth *models.BasicAuth) error {
 	return nil
 }
 
-func (s *Services) RegistrationUser(auth *models.BasicAuth) error {
-	isFree := s.Repository.IsLoginFree(auth.Login)
+func (s *Services) RegistrationPupil(pupil *models.Pupil, extraInfo *models.ExtraInfoForPupilRegistration) error {
+	isFree := s.Repository.IsLoginFree(pupil.Login)
 	if isFree == false {
 		return errors.New("the login is already used")
 	}
 
-	err := s.Repository.RegistrationUser(auth)
+	schoolID, err := s.GetSchoolIDByName(extraInfo.SchoolName)
+	if err != nil {
+		return err
+	}
+
+	teacherID, err := s.Repository.GetTeacherIDByByBIO(extraInfo)
+	if err != nil {
+		return err
+	}
+
+	classLitID, err := s.Repository.GetClassID(&extraInfo.ClassLit)
+
+	pupil.SchoolId = schoolID
+	pupil.ClassroomTeacher = teacherID
+	pupil.ClassLiteral = classLitID
+
+	err = s.Repository.RegistrationPupil(pupil)
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (s *Services) GetSchoolIDByName(schoolName string) (schoolID uint, err error) {
+	schoolID, err = s.Repository.GetSchoolIDByName(schoolName)
+	if err != nil {
+		return 0, err
+	}
+
+	return schoolID, nil
 }

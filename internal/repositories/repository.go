@@ -41,3 +41,49 @@ func (r *Repository) IsLoginFree(login string) bool {
 
 	return true
 }
+
+func (r *Repository) GetSchoolIDByName(schoolName string) (schoolID uint, err error) {
+	var amountOfRecords int64
+	tx := r.Database.
+		Select("id").
+		First(&schoolID, models.School{SchoolName: schoolName}).
+		Count(&amountOfRecords)
+
+	if err = tx.Error; err != nil {
+		return 0, err
+	}
+
+	if amountOfRecords == 0 {
+		return 0, gorm.ErrRecordNotFound
+	}
+
+	return schoolID, nil
+}
+
+func (r *Repository) GetTeacherIDByByBIO(extraInfo *models.ExtraInfoForPupilRegistration) (teacherID uint, err error) {
+	var amountOfRecords int64
+	r.Database.Select("id").
+		First(&teacherID, models.Teacher{Name: extraInfo.TeacherBIO.Name, Surname: extraInfo.TeacherBIO.Surname,
+			Patronymic: extraInfo.TeacherBIO.Patronymic}).
+		Count(&amountOfRecords)
+
+	if amountOfRecords == 0 {
+		return 0, gorm.ErrRecordNotFound
+	}
+
+	return teacherID, nil
+}
+
+func (r *Repository) GetClassID(classLit *models.ClassLit) (classID uint, err error) {
+	var amountOfRecord int64
+
+	r.Database.Select("id").
+		First(&classID, models.Class{Number: classLit.Number, Literal: classLit.Literal}).
+		Count(&amountOfRecord)
+
+	if amountOfRecord == 0 {
+		return 0, gorm.ErrRecordNotFound
+	}
+
+	return classID, nil
+}
