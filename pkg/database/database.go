@@ -23,6 +23,7 @@ func InitDatabase(configs *models.Configs) (*gorm.DB, error) {
 		return nil, err
 	}
 
+	//addInformation(database)
 	return database, nil
 }
 
@@ -46,7 +47,8 @@ func Migrations(db *gorm.DB) error {
 //	literal := []string{"А", "Б", "В", "Г", "Д"}
 //	for num := 1; num <= 11; num++ {
 //		for _, char := range literal {
-//			class := models.Class{Number: num, Literal: char}
+//			strNum := strconv.Itoa(num)
+//			class := models.Class{Number: strNum, Literal: char}
 //			db.Create(&class)
 //		}
 //	}
