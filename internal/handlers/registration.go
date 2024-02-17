@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"second/pkg/helpers"
 	"second/pkg/models"
@@ -54,8 +53,4 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		helpers.BadRequest(w, h.Logger, err)
 		return
 	}
-}
-
-func (h *Handler) GetToken(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hello")
 }
