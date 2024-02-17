@@ -23,7 +23,7 @@ type Configs struct {
 }
 
 type Pupil struct {
-	Id               uint64    `gorm:"primary_key;auto_increment"`
+	Id               uint      `gorm:"primary_key;auto_increment"`
 	Active           bool      `gorm:"default:true"`
 	Name             string    `gorm:"type:text;not null"`
 	Surname          string    `gorm:"type:text;not null"`
@@ -46,7 +46,7 @@ type Pupil struct {
 }
 
 type Class struct {
-	Id        uint64    `gorm:"not null;primary key; autoincrement"`
+	Id        uint      `gorm:"not null;primary key; autoincrement"`
 	Active    bool      `gorm:"not null;default:true"`
 	Number    int       `gorm:"not null"`
 	Literal   string    `gorm:"not null"`
@@ -56,7 +56,7 @@ type Class struct {
 }
 
 type Teacher struct {
-	Id                  uint64    `gorm:"not null;primary key; autoincrement"`
+	Id                  uint      `gorm:"not null;primary key; autoincrement"`
 	Active              bool      `gorm:"not null;default:true"`
 	Name                string    `gorm:"not null"`
 	Surname             string    `gorm:"not null"`
@@ -76,7 +76,7 @@ type Teacher struct {
 }
 
 type Subject struct {
-	Id            uint64      `gorm:"not null;primary key; autoincrement"`
+	Id            uint        `gorm:"not null;primary key; autoincrement"`
 	Active        bool        `gorm:"not null;default:true"`
 	CreatedAt     time.Time   `gorm:"not null;default:current_timestamp"`
 	UpdatedAt     time.Time   `gorm:"not null;default:current_timestamp"`
@@ -88,7 +88,7 @@ type Subject struct {
 }
 
 type Circle struct {
-	Id        uint64    `gorm:"not null;primary key; autoincrement"`
+	Id        uint      `gorm:"not null;primary key; autoincrement"`
 	Active    bool      `gorm:"not null;default:true"`
 	PupilId   int       `gorm:"not null"`
 	SubjectId int       `gorm:"not null"`
@@ -102,7 +102,7 @@ type Circle struct {
 }
 
 type SubjectName struct {
-	Id          uint64    `gorm:"not null;primary key; autoincrement"`
+	Id          uint      `gorm:"not null;primary key; autoincrement"`
 	Active      bool      `gorm:"not null;default:true"`
 	SubjectName string    `gorm:"not null"`
 	CreatedAt   time.Time `gorm:"not null;default:current_timestamp"`
@@ -111,7 +111,7 @@ type SubjectName struct {
 }
 
 type School struct {
-	Id         uint64    `gorm:"not null;primary key; autoincrement"`
+	Id         uint      `gorm:"not null;primary key; autoincrement"`
 	Active     bool      `gorm:"not null;default:true"`
 	SchoolName string    `gorm:"type:text; not null"`
 	CreatedAt  time.Time `gorm:"not null;default:current_timestamp"`
