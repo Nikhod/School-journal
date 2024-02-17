@@ -40,3 +40,14 @@ func Migrations(db *gorm.DB) error {
 
 	return nil
 }
+
+// To add data class information to the classes table
+//func addInformation(db *gorm.DB) {
+//	literal := []string{"А", "Б", "В", "Г", "Д"}
+//	for num := 1; num <= 11; num++ {
+//		for _, char := range literal {
+//			class := models.Class{Number: num, Literal: char}
+//			db.Create(&class)
+//		}
+//	}
+//}
