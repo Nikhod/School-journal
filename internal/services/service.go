@@ -3,6 +3,7 @@ package services
 import (
 	"errors"
 	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 	"second/internal/repositories"
 	"second/pkg/models"
 )
@@ -43,10 +44,19 @@ func (s *Services) RegistrationPupil(pupil *models.Pupil, extraInfo *models.Extr
 	}
 
 	classLitID, err := s.Repository.GetClassID(&extraInfo.ClassLit)
+	if err != nil {
+		return err
+	}
+
+	hashedPass, err := bcrypt.GenerateFromPassword([]byte(pupil.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 
 	pupil.SchoolId = schoolID
 	pupil.ClassroomTeacher = teacherID
 	pupil.ClassLiteral = classLitID
+	pupil.Password = string(hashedPass)
 
 	err = s.Repository.RegistrationPupil(pupil)
 	if err != nil {

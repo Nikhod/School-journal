@@ -13,7 +13,6 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		helpers.InternalServerError(w, h.Logger, err)
 		return
 	}
-
 	var pupil = models.Pupil{
 		Name:        r.FormValue("name"),
 		Surname:     r.FormValue("surname"),
@@ -23,7 +22,7 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 		YearOfBirth: r.FormValue("b_day"),
 		Address:     r.FormValue("address"),
 		Number:      r.FormValue("tel_number"),
-		ExtraInfo:   r.FormValue("extra-info"),
+		ExtraInfo:   r.FormValue("extra_info"),
 	}
 	extraInfo := models.ExtraInfoForPupilRegistration{
 		SchoolName: r.FormValue("school_name"),
