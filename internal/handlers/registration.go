@@ -7,6 +7,8 @@ import (
 	"second/pkg/models"
 )
 
+var ErrorLoginUsed = errors.New("the login is already used")
+
 func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
@@ -50,10 +52,11 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 
 	err = h.Service.RegistrationPupil(&pupil, &extraInfo)
 	if err != nil {
-		if errors.Is(err, errors.New("the login is already used")) {
+		if errors.As(err, &ErrorLoginUsed) {
 			helpers.Forbidden(w, h.Logger, err)
 			return
 		}
+
 		helpers.InternalServerError(w, h.Logger, err)
 		return
 	}
