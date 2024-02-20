@@ -53,7 +53,8 @@ func (h *Handler) RegistrationPupil(w http.ResponseWriter, r *http.Request) {
 	err = h.Service.RegistrationPupil(&pupil, &extraInfo)
 	if err != nil {
 		if errors.As(err, &ErrorLoginUsed) {
-			helpers.Forbidden(w, h.Logger, err)
+			w.WriteHeader(http.StatusForbidden)
+			_ = helpers.SendAnswer(w, "The login is already used")
 			return
 		}
 

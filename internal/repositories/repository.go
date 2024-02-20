@@ -44,9 +44,9 @@ func (r *Repository) GetSchoolIDByName(schoolName string) (schoolID uint, err er
 	var amountOfRecords int64
 	var school models.School
 	tx := r.Database.
-		Model(models.School{}).
+		Model(models.School{SchoolName: schoolName}).
 		Select("id").
-		Where(models.School{SchoolName: schoolName}).
+		//Where(models.School{SchoolName: schoolName}).
 		Count(&amountOfRecords)
 
 	if amountOfRecords == 0 {
