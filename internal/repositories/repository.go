@@ -17,7 +17,10 @@ func NewRepository(database *gorm.DB, logger *zap.Logger) *Repository {
 }
 
 func (r *Repository) RegistrationPupil(pupil *models.Pupil) error {
-	r.Database.Create(&pupil)
+	err := r.Database.Create(&pupil).Error
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -46,7 +49,7 @@ func (r *Repository) GetSchoolIDByName(schoolName string) (schoolID uint, err er
 	tx := r.Database.
 		Model(models.School{SchoolName: schoolName}).
 		Select("id").
-		//Where(models.School{SchoolName: schoolName}).
+		Where(models.School{SchoolName: schoolName, Active: true}).
 		Count(&amountOfRecords)
 
 	if amountOfRecords == 0 {
@@ -62,21 +65,21 @@ func (r *Repository) GetSchoolIDByName(schoolName string) (schoolID uint, err er
 	return schoolID, nil
 }
 
-func (r *Repository) GetTeacherIDByByBIO(extraInfo *models.ExtraInfoForPupilRegistration) (teacherID uint, err error) {
+func (r *Repository) GetTeacherIDByByBIO(extraInfo *models.ExtraInfoForRegistration) (teacherID uint, err error) {
 	var amountOfRecords int64
 	var teacher models.Teacher
-	r.Database.
+	tx := r.Database.
 		Model(models.Teacher{}).
 		Select("id").
 		Where(models.Teacher{Name: extraInfo.TeacherBIO.Name, Surname: extraInfo.TeacherBIO.Surname,
-			Patronymic: extraInfo.TeacherBIO.Patronymic}).
+			Patronymic: extraInfo.TeacherBIO.Patronymic, Active: true}).
 		Count(&amountOfRecords)
 
 	if amountOfRecords == 0 {
 		return 0, gorm.ErrRecordNotFound
 	}
 
-	err = r.Database.First(&teacher).Error
+	err = tx.First(&teacher).Error
 	if err != nil {
 		return 0, err
 	}
@@ -88,21 +91,29 @@ func (r *Repository) GetTeacherIDByByBIO(extraInfo *models.ExtraInfoForPupilRegi
 func (r *Repository) GetClassID(classLit *models.ClassLit) (classID uint, err error) {
 	var amountOfRecord int64
 	var class models.Class
-	r.Database.
+	tx := r.Database.
 		Model(models.Class{}).
 		Select("id").
-		Where(models.Class{Number: classLit.Number, Literal: classLit.Literal}).
+		Where(models.Class{Number: classLit.Number, Literal: classLit.Literal, Active: true}).
 		Count(&amountOfRecord)
 
 	if amountOfRecord == 0 {
 		return 0, gorm.ErrRecordNotFound
 	}
 
-	err = r.Database.First(&class).Error
+	err = tx.First(&class).Error
 	if err != nil {
 		return 0, err
 	}
 
 	classID = class.Id
 	return classID, nil
+}
+
+func (r *Repository) RegistrationTeacher(teacher *models.Teacher) error {
+	err := r.Database.Create(&teacher).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -27,7 +27,7 @@ func (s *Services) ValidateLoginAndPass(auth *models.BasicAuth) error {
 	return nil
 }
 
-func (s *Services) RegistrationPupil(pupil *models.Pupil, extraInfo *models.ExtraInfoForPupilRegistration) error {
+func (s *Services) RegistrationPupil(pupil *models.Pupil, extraInfo *models.ExtraInfoForRegistration) error {
 	isFree := s.Repository.IsLoginFree(pupil.Login)
 	if isFree == false {
 		return errors.New("the login is already used")
@@ -73,4 +73,33 @@ func (s *Services) GetSchoolIDByName(schoolName string) (schoolID uint, err erro
 	}
 
 	return schoolID, nil
+}
+
+func (s *Services) RegistrationTeacher(teacher *models.Teacher, extraInfo *models.ExtraInfoForRegistration) error {
+
+	schoolID, err := s.GetSchoolIDByName(extraInfo.SchoolName)
+	if err != nil {
+		return err
+	}
+
+	classID, err := s.Repository.GetClassID(&extraInfo.ClassLit)
+	if err != nil {
+		return err
+	}
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(teacher.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	teacher.ClassroomManagement = classID
+	teacher.SchoolId = schoolID
+	teacher.Password = string(hashedPassword)
+
+	err = s.Repository.RegistrationTeacher(teacher)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
