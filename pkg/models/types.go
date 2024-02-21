@@ -8,7 +8,7 @@ type Answer struct {
 	Answer string `json:"answer"`
 }
 
-type ExtraInfoForPupilRegistration struct {
+type ExtraInfoForRegistration struct {
 	SchoolName string
 	TeacherBIO TeacherBIO
 	ClassLit   ClassLit
