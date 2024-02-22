@@ -118,3 +118,17 @@ type School struct {
 	UpdatedAt  time.Time `gorm:"not null;default:current_timestamp"`
 	DeletedAt  time.Time `gorm:"not null;default:current_timestamp"`
 }
+
+type Admin struct {
+	Id        uint      `gorm:"not null;primary key; autoincrement"`
+	Active    bool      `gorm:"not null;default:true"`
+	CreatedAt time.Time `gorm:"not null;default:current_timestamp"`
+	UpdatedAt time.Time `gorm:"not null;default:current_timestamp"`
+	DeletedAt time.Time `gorm:"not null;default:current_timestamp"`
+	Login     string    `gorm:"type:text;not null;unique"`
+	Password  string    `gorm:"type:text;not null"`
+	Name      string    `gorm:"type:text;not null"`
+	Surname   string    `gorm:"type:text;not null"`
+	SchoolID  uint      `gorm:"not null"`
+	School    School    `gorm:"not null;foreignkey:SchoolID"`
+}
